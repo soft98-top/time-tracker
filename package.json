@@ -14,7 +14,7 @@
   ],
   "author": "soft98-top",
   "license": "MIT",
-  "homepage": "https://soft98-top.github.io/time-tracker",
+  "homepage": "https://apps.soft98.top/time-tracker",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
