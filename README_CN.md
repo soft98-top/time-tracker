@@ -19,7 +19,7 @@
 
 ### 在线使用
 
-🌐 **在线体验**: [https://apps.soft98.top/time-tracker](https://apps.soft98.top/time-tracker)
+🌐 **在线体验**: [https://soft98-top.github.io/time-tracker](https://soft98-top.github.io/time-tracker)
 
 直接访问应用开始使用，无需安装。
 
@@ -65,7 +65,7 @@ git push origin main
 ```
 
 #### 访问地址
-- 🌐 **生产环境**: [https://apps.soft98.top/time-tracker](https://apps.soft98.top/time-tracker)
+- 🌐 **生产环境**: [https://soft98-top.github.io/time-tracker](https://soft98-top.github.io/time-tracker)
 - ⏳ **部署时间**: 通常需要 2-5 分钟完成构建和部署
 
 ## 📖 使用指南

@@ -19,7 +19,7 @@ A flexible time management tool based on the Pomodoro Technique with enhanced st
 
 ### Online Access
 
-🌐 **Live Demo**: [https://apps.soft98.top/time-tracker](https://apps.soft98.top/time-tracker)
+🌐 **Live Demo**: [https://soft98-top.github.io/time-tracker](https://soft98-top.github.io/time-tracker)
 
 Access the application directly without installation.
 
@@ -65,7 +65,7 @@ git push origin main
 ```
 
 #### Access URLs
-- 🌐 **Production**: [https://apps.soft98.top/time-tracker](https://apps.soft98.top/time-tracker)
+- 🌐 **Production**: [https://soft98-top.github.io/time-tracker](https://soft98-top.github.io/time-tracker)
 - ⏳ **Deploy Time**: Usually takes 2-5 minutes to complete build and deployment
 
 ## 📖 Usage Guide
