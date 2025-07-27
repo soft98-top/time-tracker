@@ -1,0 +1,371 @@
+/* TimerDisplay 组件样式 */
+.timer-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem; /* 桌面端更宽松的内边距 */
+  border-radius: 16px; /* 桌面端更大的圆角 */
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); /* 桌面端更明显的阴影 */
+  transition: all 0.3s ease;
+  min-height: 400px; /* 桌面端更高的最小高度 */
+  justify-content: center;
+  max-width: 600px; /* 限制最大宽度 */
+  width: 100%;
+}
+
+/* 状态特定的样式 */
+.timer-display--idle {
+  border-left: 4px solid #6b7280;
+}
+
+.timer-display--focus {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+.timer-display--reflection {
+  border-left: 4px solid #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+}
+
+.timer-display--rest {
+  border-left: 4px solid #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+/* 头部区域 */
+.timer-display__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.timer-display__state-name {
+  font-size: 1.75rem; /* 桌面端更大的状态名称 */
+  font-weight: 600;
+  margin: 0;
+  color: #1f2937;
+}
+
+.timer-display__notification-badge {
+  background: #fbbf24;
+  color: #92400e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* 时间显示区域 */
+.timer-display__time-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.timer-display__time {
+  font-size: 4rem; /* 桌面端更大的时间显示 */
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.05em; /* 桌面端字符间距 */
+}
+
+/* 进度条 */
+.timer-display__progress-container {
+  width: 100%;
+  max-width: 400px; /* 桌面端更宽的进度条 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.timer-display__progress-bar {
+  width: 100%;
+  height: 12px; /* 桌面端更粗的进度条 */
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.timer-display__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.timer-display--focus .timer-display__progress-fill {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.timer-display--reflection .timer-display__progress-fill {
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+}
+
+.timer-display--rest .timer-display__progress-fill {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.timer-display__target-time {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* 消息区域 */
+.timer-display__message {
+  text-align: center;
+  max-width: 400px;
+}
+
+.timer-display__message p {
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 专注锁定提示 */
+.timer-display__focus-lock {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.timer-display__focus-lock small {
+  color: #92400e;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* 响应式设计 */
+/* 大屏桌面端 */
+@media (min-width: 1400px) {
+  .timer-display {
+    padding: 4rem;
+    min-height: 500px;
+    border-radius: 20px;
+  }
+
+  .timer-display__time {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+  }
+
+  .timer-display__state-name {
+    font-size: 2rem;
+  }
+
+  .timer-display__progress-container {
+    max-width: 500px;
+    gap: 1rem;
+  }
+
+  .timer-display__progress-bar {
+    height: 16px;
+    border-radius: 8px;
+  }
+}
+
+/* 标准桌面端 */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .timer-display {
+    padding: 3rem;
+    min-height: 400px;
+  }
+
+  .timer-display__time {
+    font-size: 4rem;
+  }
+
+  .timer-display__state-name {
+    font-size: 1.75rem;
+  }
+
+  .timer-display__progress-container {
+    max-width: 400px;
+  }
+}
+
+/* 平板端 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .timer-display {
+    padding: 2rem;
+    min-height: 320px;
+  }
+
+  .timer-display__time {
+    font-size: 3rem;
+  }
+
+  .timer-display__state-name {
+    font-size: 1.5rem;
+  }
+
+  .timer-display__progress-container {
+    max-width: 350px;
+  }
+
+  .timer-display__progress-bar {
+    height: 10px;
+  }
+}
+
+/* 移动端 */
+@media (max-width: 767px) {
+  .timer-display {
+    padding: 1.5rem;
+    min-height: 280px;
+    border-radius: 12px;
+  }
+
+  .timer-display__time {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .timer-display__state-name {
+    font-size: 1.25rem;
+  }
+
+  .timer-display__progress-container {
+    max-width: 280px;
+    gap: 0.5rem;
+  }
+
+  .timer-display__progress-bar {
+    height: 8px;
+    border-radius: 4px;
+  }
+}
+
+/* 小屏移动端 */
+@media (max-width: 480px) {
+  .timer-display {
+    padding: 1rem;
+    min-height: 240px;
+  }
+
+  .timer-display__time {
+    font-size: 2rem;
+  }
+
+  .timer-display__header {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .timer-display__message p {
+    font-size: 0.875rem;
+  }
+
+  .timer-display__progress-container {
+    max-width: 240px;
+  }
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 767px) {
+  /* 防止文本选择 */
+  .timer-display {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* 移动端时间显示优化 */
+  .timer-display__time {
+    font-variant-numeric: tabular-nums; /* 等宽数字 */
+    letter-spacing: 0.02em;
+  }
+  
+  /* 移动端进度条触摸优化 */
+  .timer-display__progress-bar {
+    cursor: default; /* 移动端不显示指针 */
+  }
+}
+
+/* 移动端横屏优化 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .timer-display {
+    min-height: 200px;
+    padding: 0.75rem;
+  }
+  
+  .timer-display__time {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .timer-display__header {
+    margin-bottom: 0.75rem;
+  }
+  
+  .timer-display__time-section {
+    margin-bottom: 1rem;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .timer-display {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+
+  .timer-display--focus {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  }
+
+  .timer-display--reflection {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  }
+
+  .timer-display--rest {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  }
+
+  .timer-display__state-name {
+    color: #f9fafb;
+  }
+
+  .timer-display__time {
+    color: #f9fafb;
+  }
+
+  .timer-display__message p {
+    color: #d1d5db;
+  }
+
+  .timer-display__target-time {
+    color: #9ca3af;
+  }
+
+  .timer-display__progress-bar {
+    background: #374151;
+  }
+}

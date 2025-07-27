@@ -1,0 +1,159 @@
+.statistics-page {
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.statistics-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.statistics-section {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.history-section {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.statistics-section h2,
+.history-section h2 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* 大屏桌面端优化 */
+@media (min-width: 1200px) {
+  .statistics-container {
+    gap: 2.5rem;
+  }
+  
+  .statistics-section,
+  .history-section {
+    padding: 2rem;
+  }
+  
+  .statistics-section h2,
+  .history-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* 平板端优化 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .statistics-container {
+    gap: 1.5rem;
+  }
+  
+  .statistics-section,
+  .history-section {
+    padding: 1.5rem;
+  }
+  
+  .statistics-section h2,
+  .history-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* 移动端优化 */
+@media (max-width: 767px) {
+  .statistics-container {
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+  
+  .statistics-section,
+  .history-section {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+  
+  .statistics-section h2,
+  .history-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* 小屏移动端优化 */
+@media (max-width: 480px) {
+  .statistics-container {
+    gap: 0.75rem;
+    padding: 0 0.25rem;
+  }
+  
+  .statistics-section,
+  .history-section {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+  
+  .statistics-section h2,
+  .history-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 767px) {
+  .statistics-page {
+    /* 移动端安全区域适配 */
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+    padding-right: max(0.5rem, env(safe-area-inset-right));
+  }
+  
+  .statistics-container {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .statistics-section,
+  .history-section {
+    /* 移动端内容优化 */
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+}
+
+/* 移动端横屏优化 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .statistics-page {
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .statistics-container {
+    gap: 1rem;
+  }
+  
+  .statistics-section,
+  .history-section {
+    padding: 1rem;
+  }
+  
+  .statistics-section h2,
+  .history-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+}

@@ -1,0 +1,132 @@
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.error-boundary__container {
+  max-width: 500px;
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.error-boundary__icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.error-boundary__title {
+  color: #dc3545;
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.error-boundary__message {
+  color: #6c757d;
+  margin-bottom: 32px;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.error-boundary__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.error-boundary__button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-boundary__button--primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.error-boundary__button--primary:hover {
+  background-color: #0056b3;
+}
+
+.error-boundary__button--secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.error-boundary__button--secondary:hover {
+  background-color: #545b62;
+}
+
+.error-boundary__details {
+  text-align: left;
+  margin-top: 24px;
+  border-top: 1px solid #e9ecef;
+  padding-top: 24px;
+}
+
+.error-boundary__details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: #6c757d;
+  margin-bottom: 12px;
+}
+
+.error-boundary__details summary:hover {
+  color: #495057;
+}
+
+.error-boundary__technical {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.error-boundary__technical p {
+  margin-bottom: 8px;
+}
+
+.error-boundary__stack {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .error-boundary {
+    padding: 16px;
+  }
+  
+  .error-boundary__container {
+    padding: 24px;
+  }
+  
+  .error-boundary__actions {
+    flex-direction: column;
+  }
+  
+  .error-boundary__button {
+    width: 100%;
+  }
+}

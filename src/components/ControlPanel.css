@@ -1,0 +1,540 @@
+/* ControlPanel 组件样式 */
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* 桌面端更大的间距 */
+  padding: 2rem; /* 桌面端更宽松的内边距 */
+  background: #ffffff;
+  border-radius: 16px; /* 桌面端更大的圆角 */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); /* 桌面端更明显的阴影 */
+  border: 1px solid #e5e7eb;
+  max-width: 400px; /* 限制最大宽度 */
+  width: 100%;
+}
+
+/* 头部区域 */
+.control-panel__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-panel__title {
+  font-size: 1.5rem; /* 桌面端更大的标题 */
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.control-panel__status {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* 按钮区域 */
+.control-panel__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.control-panel__button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-panel__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem; /* 桌面端更大的图标间距 */
+  padding: 1rem 2rem; /* 桌面端更大的内边距 */
+  border: none;
+  border-radius: 10px; /* 桌面端更大的圆角 */
+  font-size: 1.1rem; /* 桌面端更大的字体 */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 56px; /* 桌面端更高的按钮 */
+  position: relative;
+}
+
+.control-panel__button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* 按钮变体样式 */
+.control-panel__button--primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.control-panel__button--primary:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.control-panel__button--secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.control-panel__button--secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.control-panel__button--danger {
+  background: #ef4444;
+  color: white;
+}
+
+.control-panel__button--danger:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* 禁用状态 */
+.control-panel__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.control-panel__button-icon {
+  font-size: 1.25rem;
+}
+
+.control-panel__button-text {
+  font-weight: 600;
+}
+
+/* 禁用原因提示 */
+.control-panel__disabled-reason {
+  font-size: 0.75rem;
+  color: #6b7280;
+  padding: 0.25rem 0.5rem;
+  background: #f9fafb;
+  border-radius: 4px;
+  border-left: 3px solid #fbbf24;
+}
+
+/* 信息提示 */
+.control-panel__info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+}
+
+.control-panel__info-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.control-panel__info-text {
+  font-size: 0.875rem;
+  color: #1e40af;
+  line-height: 1.4;
+}
+
+/* 通知提示 */
+.control-panel__notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 8px;
+  animation: pulse-notification 2s infinite;
+}
+
+.control-panel__notification-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.control-panel__notification-text {
+  font-size: 0.875rem;
+  color: #92400e;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+@keyframes pulse-notification {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* 确认对话框 */
+.control-panel__dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.control-panel__dialog {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideIn 0.2s ease;
+}
+
+.control-panel__dialog-header {
+  padding: 1.5rem 1.5rem 0;
+}
+
+.control-panel__dialog-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.control-panel__dialog-body {
+  padding: 1rem 1.5rem;
+}
+
+.control-panel__dialog-body p {
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.control-panel__dialog-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0 1.5rem 1.5rem;
+  justify-content: flex-end;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 错误提示 */
+.control-panel__error-toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  animation: slideInRight 0.3s ease;
+}
+
+.control-panel__error-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+}
+
+.control-panel__error-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.control-panel__error-message {
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.control-panel__error-close {
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.control-panel__error-close:hover {
+  background: #fecaca;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 响应式设计 */
+/* 大屏桌面端 */
+@media (min-width: 1400px) {
+  .control-panel {
+    padding: 3rem;
+    gap: 2.5rem;
+    border-radius: 20px;
+    max-width: 500px;
+  }
+
+  .control-panel__title {
+    font-size: 1.75rem;
+  }
+
+  .control-panel__button {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.2rem;
+    min-height: 64px;
+    border-radius: 12px;
+  }
+}
+
+/* 标准桌面端 */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .control-panel {
+    padding: 2rem;
+    gap: 2rem;
+    max-width: 400px;
+  }
+
+  .control-panel__title {
+    font-size: 1.5rem;
+  }
+
+  .control-panel__button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-height: 56px;
+  }
+}
+
+/* 平板端 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .control-panel {
+    padding: 1.5rem;
+    gap: 1.5rem;
+    max-width: 350px;
+  }
+
+  .control-panel__title {
+    font-size: 1.3rem;
+  }
+
+  .control-panel__button {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    min-height: 52px;
+  }
+}
+
+/* 移动端 */
+@media (max-width: 767px) {
+  .control-panel {
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 12px;
+    max-width: none;
+  }
+
+  .control-panel__title {
+    font-size: 1.25rem;
+  }
+
+  .control-panel__button {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+    gap: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .control-panel__dialog {
+    margin: 1rem;
+    width: calc(100% - 2rem);
+  }
+
+  .control-panel__error-toast {
+    top: 0.5rem;
+    right: 0.5rem;
+    left: 0.5rem;
+  }
+
+  .control-panel__error-content {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* 小屏移动端 */
+@media (max-width: 480px) {
+  .control-panel__buttons {
+    gap: 0.75rem;
+  }
+
+  .control-panel__button {
+    padding: 0.875rem 1.25rem; /* 增加触摸区域 */
+    min-height: 48px; /* 更大的触摸目标 */
+    font-size: 0.9rem;
+  }
+
+  .control-panel__dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .control-panel__dialog-actions .control-panel__button {
+    width: 100%;
+  }
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 767px) {
+  /* 触摸反馈 */
+  .control-panel__button:active:not(:disabled) {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* 防止长按选择文本 */
+  .control-panel__button {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* 移动端对话框优化 */
+  .control-panel__dialog {
+    margin: 0.5rem;
+    width: calc(100% - 1rem);
+    max-height: calc(100vh - 1rem);
+    border-radius: 12px;
+  }
+  
+  /* 移动端错误提示优化 */
+  .control-panel__error-toast {
+    top: 0.25rem;
+    right: 0.25rem;
+    left: 0.25rem;
+    z-index: 9999;
+  }
+  
+  .control-panel__error-content {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .control-panel {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .control-panel__title {
+    color: #f9fafb;
+  }
+
+  .control-panel__status {
+    color: #d1d5db;
+  }
+
+  .control-panel__button--secondary {
+    background: #374151;
+    color: #f9fafb;
+    border-color: #4b5563;
+  }
+
+  .control-panel__button--secondary:hover:not(:disabled) {
+    background: #4b5563;
+  }
+
+  .control-panel__disabled-reason {
+    background: #374151;
+    color: #d1d5db;
+  }
+
+  .control-panel__info {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+  }
+
+  .control-panel__info-text {
+    color: #bfdbfe;
+  }
+
+  .control-panel__notification {
+    background: #92400e;
+    border-color: #f59e0b;
+  }
+
+  .control-panel__notification-text {
+    color: #fbbf24;
+  }
+
+  .control-panel__dialog {
+    background: #1f2937;
+  }
+
+  .control-panel__dialog-header h3 {
+    color: #f9fafb;
+  }
+
+  .control-panel__dialog-body p {
+    color: #d1d5db;
+  }
+}

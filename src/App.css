@@ -1,0 +1,267 @@
+/* CSS 变量定义 - 浅色主题 */
+:root {
+  --primary-color: #646cff;
+  --primary-hover: #535bf2;
+  --secondary-color: #f9f9f9;
+  --accent-color: #ff6b6b;
+  
+  --text-primary: #213547;
+  --text-secondary: #666;
+  --text-muted: #888;
+  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --nav-bg: #ffffff;
+  --card-bg: #ffffff;
+  
+  --border-color: #e1e5e9;
+  --hover-bg: rgba(100, 108, 255, 0.1);
+  --active-bg: rgba(100, 108, 255, 0.15);
+  
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --error-color: #f44336;
+}
+
+/* 深色主题 */
+[data-theme="dark"] {
+  --primary-color: #646cff;
+  --primary-hover: #535bf2;
+  --secondary-color: #2a2a2a;
+  --accent-color: #ff6b6b;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #888;
+  
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #242424;
+  --nav-bg: #1e1e1e;
+  --card-bg: #2a2a2a;
+  
+  --border-color: #404040;
+  --hover-bg: rgba(100, 108, 255, 0.2);
+  --active-bg: rgba(100, 108, 255, 0.3);
+  
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --error-color: #f44336;
+}
+
+/* 全局样式重置 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 主应用布局 */
+.app {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.app-main {
+  flex: 1;
+  background: var(--bg-secondary);
+  transition: background-color 0.3s ease;
+  width: 100%; /* 确保背景全宽 */
+  display: flex;
+  justify-content: center; /* 内容居中 */
+}
+
+/* 内容容器 */
+.app-main-content {
+  width: 100%;
+  max-width: 1400px; /* 限制内容最大宽度 */
+  padding: 2rem; /* 桌面端默认内边距 */
+}
+
+/* 通用按钮样式 */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px; /* 确保触摸友好的最小高度 */
+  padding: 0.75rem 1.5rem; /* 桌面端默认内边距 */
+}
+
+/* 桌面端按钮优化 */
+@media (min-width: 1024px) {
+  button {
+    min-height: 48px;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* 移动端按钮优化 */
+@media (max-width: 767px) {
+  button {
+    min-height: 44px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* 通用输入样式 */
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* 响应式断点 - 桌面优先设计 */
+.app {
+  font-size: 16px; /* 桌面端默认字体大小 */
+}
+
+/* 大屏桌面端 */
+@media (min-width: 1400px) {
+  .app-main-content {
+    padding: 3rem;
+    max-width: 1600px; /* 更大的内容宽度 */
+  }
+}
+
+/* 标准桌面端 */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .app-main-content {
+    padding: 2rem;
+    max-width: 1200px;
+  }
+}
+
+/* 平板端 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .app-main-content {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+  
+  .app {
+    font-size: 15px;
+  }
+}
+
+/* 移动端 */
+@media (max-width: 767px) {
+  .app-main-content {
+    padding: 1rem;
+    max-width: 100%;
+  }
+  
+  .app {
+    font-size: 14px;
+  }
+}
+
+/* 小屏移动端 */
+@media (max-width: 480px) {
+  .app-main-content {
+    padding: 0.5rem;
+  }
+  
+  .app {
+    font-size: 13px;
+  }
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 767px) {
+  /* 确保触摸目标足够大 */
+  button, 
+  input, 
+  select, 
+  textarea,
+  .nav-link,
+  .theme-toggle {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* 移动端滚动优化 */
+  .app-main {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+  
+  /* 防止移动端缩放 */
+  input, 
+  select, 
+  textarea {
+    font-size: 16px; /* 防止iOS自动缩放 */
+  }
+  
+  /* 移动端安全区域适配 */
+  .app {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* 横屏移动端优化 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .app-main {
+    padding: 0.5rem 1rem;
+  }
+  
+  /* 横屏时减少垂直间距 */
+  .timer-container {
+    gap: 1rem !important;
+  }
+}

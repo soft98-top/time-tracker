@@ -1,0 +1,156 @@
+.timer-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px); /* 减去导航栏高度 */
+  padding: 0; /* 移除内边距，由app-main-content处理 */
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: row; /* 桌面端水平布局 */
+  align-items: flex-start; /* 顶部对齐 */
+  justify-content: center;
+  gap: 3rem; /* 桌面端更大的间距 */
+  width: 100%;
+}
+
+.reflection-prompt {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: rgba(33, 150, 243, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  text-align: center;
+}
+
+.open-reflection-btn {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+}
+
+.open-reflection-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
+  background: linear-gradient(135deg, #1976D2, #1565C0);
+}
+
+.open-reflection-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+/* 响应式设计 */
+/* 大屏桌面端 */
+@media (min-width: 1400px) {
+  .timer-container {
+    gap: 4rem;
+  }
+}
+
+/* 标准桌面端 */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .timer-container {
+    gap: 3rem;
+  }
+}
+
+/* 平板端 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .timer-container {
+    flex-direction: column; /* 平板端垂直布局 */
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .reflection-prompt {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+  }
+  
+  .open-reflection-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* 移动端 */
+@media (max-width: 767px) {
+  .timer-page {
+    min-height: calc(100vh - 120px); /* 调整移动端导航栏高度 */
+  }
+  
+  .timer-container {
+    flex-direction: column; /* 移动端垂直布局 */
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .reflection-prompt {
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .open-reflection-btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+/* 小屏移动端 */
+@media (max-width: 480px) {
+  .timer-container {
+    gap: 1rem;
+  }
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 767px) {
+  .timer-page {
+    /* 移动端安全区域适配 */
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  .timer-container {
+    /* 确保内容不会被遮挡 */
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* 移动端横屏优化 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .timer-page {
+    padding: 0.5rem 1rem;
+    min-height: calc(100vh - 100px); /* 调整横屏导航栏高度 */
+  }
+  
+  .timer-container {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 100%;
+  }
+  
+  /* 横屏时组件等宽 */
+  .timer-container > * {
+    flex: 1;
+    max-width: 400px;
+  }
+}

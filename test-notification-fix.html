@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知和声音测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #3b82f6;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #f3f4f6;
+        }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <h1>🔔 通知和声音功能测试</h1>
+    
+    <div class="status" id="status">
+        准备测试...
+    </div>
+    
+    <h2>🔊 声音测试</h2>
+    <button onclick="testSound('notification')">测试通知声音</button>
+    <button onclick="testSound('success')">测试成功声音</button>
+    <button onclick="testSound('warning')">测试警告声音</button>
+    
+    <h2>📢 通知测试</h2>
+    <button onclick="requestPermission()">请求通知权限</button>
+    <button onclick="testNotification()">测试桌面通知</button>
+    
+    <h2>🧪 综合测试</h2>
+    <button onclick="testTimeReached()">测试时间到达提醒</button>
+    <button onclick="testStateChange()">测试状态切换通知</button>
+    <button onclick="testSessionComplete()">测试会话完成通知</button>
+
+    <script>
+        // 简化的NotificationManager类用于测试
+        class TestNotificationManager {
+            constructor() {
+                this.audioContext = null;
+                this.soundEnabled = true;
+                this.notificationEnabled = true;
+                this.permissionGranted = false;
+                this.checkNotificationPermission();
+            }
+
+            checkNotificationPermission() {
+                if ('Notification' in window) {
+                    this.permissionGranted = Notification.permission === 'granted';
+                }
+            }
+
+            getAudioContext() {
+                try {
+                    if (!this.audioContext || this.audioContext.state === 'closed') {
+                        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    return this.audioContext;
+                } catch (error) {
+                    console.warn('Failed to create audio context:', error);
+                    return null;
+                }
+            }
+
+            async requestNotificationPermission() {
+                if (!('Notification' in window)) {
+                    updateStatus('此浏览器不支持通知', 'error');
+                    return false;
+                }
+
+                if (Notification.permission === 'granted') {
+                    this.permissionGranted = true;
+                    updateStatus('通知权限已授予', 'success');
+                    return true;
+                }
+
+                if (Notification.permission === 'denied') {
+                    updateStatus('通知权限已被拒绝', 'error');
+                    return false;
+                }
+
+                try {
+                    const permission = await Notification.requestPermission();
+                    this.permissionGranted = permission === 'granted';
+                    updateStatus(
+                        this.permissionGranted ? '通知权限已授予' : '通知权限被拒绝',
+                        this.permissionGranted ? 'success' : 'error'
+                    );
+                    return this.permissionGranted;
+                } catch (error) {
+                    console.error('Error requesting notification permission:', error);
+                    updateStatus('请求通知权限失败', 'error');
+                    return false;
+                }
+            }
+
+            async playSound(soundType = 'notification') {
+                if (!this.soundEnabled) {
+                    updateStatus('声音已禁用', 'error');
+                    return;
+                }
+
+                try {
+                    const audioContext = this.getAudioContext();
+                    if (!audioContext) {
+                        throw new Error('AudioContext not available');
+                    }
+
+                    if (audioContext.state === 'suspended') {
+                        await audioContext.resume();
+                    }
+
+                    const frequency = this.getSoundFrequency(soundType);
+                    const duration = this.getSoundDuration(soundType);
+
+                    await this.generateBeep(frequency, duration, audioContext);
+                    updateStatus(`${soundType} 声音播放成功`, 'success');
+                } catch (error) {
+                    console.error('Error playing sound:', error);
+                    updateStatus(`声音播放失败: ${error.message}`, 'error');
+                }
+            }
+
+            getSoundFrequency(soundType) {
+                switch (soundType) {
+                    case 'success': return 800;
+                    case 'warning': return 400;
+                    case 'notification':
+                    default: return 600;
+                }
+            }
+
+            getSoundDuration(soundType) {
+                switch (soundType) {
+                    case 'success': return 0.3;
+                    case 'warning': return 0.5;
+                    case 'notification':
+                    default: return 0.2;
+                }
+            }
+
+            async generateBeep(frequency, duration, audioContext) {
+                try {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+
+                    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                    oscillator.type = 'sine';
+
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + duration);
+
+                    return new Promise((resolve, reject) => {
+                        oscillator.onended = () => resolve();
+                        oscillator.onerror = () => reject(new Error('Oscillator error'));
+                        
+                        setTimeout(() => {
+                            try {
+                                oscillator.disconnect();
+                                gainNode.disconnect();
+                            } catch (e) {
+                                // 忽略断开连接的错误
+                            }
+                            resolve();
+                        }, (duration + 0.1) * 1000);
+                    });
+                } catch (error) {
+                    console.error('Error generating beep:', error);
+                    throw error;
+                }
+            }
+
+            async showNotification(options) {
+                if (!this.notificationEnabled) {
+                    updateStatus('通知已禁用', 'error');
+                    return;
+                }
+
+                if (!this.permissionGranted) {
+                    const granted = await this.requestNotificationPermission();
+                    if (!granted) {
+                        updateStatus('通知权限未授予', 'error');
+                        return;
+                    }
+                }
+
+                try {
+                    const notification = new Notification(options.title, {
+                        body: options.body,
+                        icon: options.icon || '/vite.svg',
+                        tag: options.tag,
+                        requireInteraction: options.requireInteraction || true,
+                        badge: '/vite.svg',
+                        silent: false,
+                        timestamp: Date.now(),
+                        renotify: true
+                    });
+
+                    notification.onclick = () => {
+                        window.focus();
+                        notification.close();
+                    };
+
+                    setTimeout(() => {
+                        notification.close();
+                    }, 8000);
+
+                    updateStatus('通知发送成功', 'success');
+                } catch (error) {
+                    console.error('Error showing notification:', error);
+                    updateStatus(`通知发送失败: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        const notificationManager = new TestNotificationManager();
+
+        function updateStatus(message, type = '') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+        }
+
+        async function testSound(soundType) {
+            updateStatus(`正在测试 ${soundType} 声音...`);
+            await notificationManager.playSound(soundType);
+        }
+
+        async function requestPermission() {
+            updateStatus('正在请求通知权限...');
+            await notificationManager.requestNotificationPermission();
+        }
+
+        async function testNotification() {
+            updateStatus('正在发送测试通知...');
+            await notificationManager.showNotification({
+                title: '🧪 测试通知',
+                body: '这是一个测试通知，如果您看到了这条消息，说明通知功能正常工作！',
+                tag: 'test-notification',
+                requireInteraction: false
+            });
+        }
+
+        async function testTimeReached() {
+            updateStatus('正在测试时间到达提醒...');
+            await notificationManager.playSound('notification');
+            await notificationManager.showNotification({
+                title: '🍅 时间提醒',
+                body: '专注时间已达到 25 分钟，您可以继续或切换状态',
+                tag: 'time-reached',
+                requireInteraction: true
+            });
+        }
+
+        async function testStateChange() {
+            updateStatus('正在测试状态切换通知...');
+            await notificationManager.playSound('success');
+            await notificationManager.showNotification({
+                title: '🍅 状态切换',
+                body: '已从专注切换到反思',
+                tag: 'state-changed',
+                requireInteraction: false
+            });
+        }
+
+        async function testSessionComplete() {
+            updateStatus('正在测试会话完成通知...');
+            await notificationManager.playSound('success');
+            await notificationManager.showNotification({
+                title: '✅ 会话完成',
+                body: '专注会话完成，持续了 25 分钟，做得很好！',
+                tag: 'session-completed',
+                requireInteraction: true
+            });
+        }
+
+        // 页面加载完成后检查初始状态
+        window.addEventListener('load', () => {
+            const permission = Notification.permission;
+            updateStatus(`当前通知权限状态: ${
+                permission === 'granted' ? '✅ 已授权' :
+                permission === 'denied' ? '❌ 已拒绝' :
+                '⏳ 未请求'
+            }`);
+        });
+    </script>
+</body>
+</html>

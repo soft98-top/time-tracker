@@ -1,0 +1,176 @@
+.settings-page {
+  padding: 0; /* 移除内边距，由app-main-content处理 */
+  width: 100%;
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* 桌面端更大的间距 */
+}
+
+.settings-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.settings-header h2 {
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+  font-size: 2.5rem; /* 桌面端更大的标题 */
+  font-weight: 600;
+}
+
+.settings-header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1.25rem; /* 桌面端更大的描述文字 */
+}
+
+.settings-content {
+  background: var(--card-bg);
+  border-radius: 1.5rem; /* 桌面端更大的圆角 */
+  padding: 3rem; /* 桌面端更宽松的内边距 */
+  box-shadow: var(--card-shadow);
+}
+
+/* 响应式设计 */
+/* 大屏桌面端 */
+@media (min-width: 1400px) {
+  .settings-container {
+    gap: 4rem;
+  }
+  
+  .settings-header h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .settings-header p {
+    font-size: 1.5rem;
+  }
+  
+  .settings-content {
+    padding: 4rem;
+    border-radius: 2rem;
+  }
+}
+
+/* 标准桌面端 */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .settings-container {
+    gap: 3rem;
+  }
+  
+  .settings-header h2 {
+    font-size: 2.5rem;
+  }
+  
+  .settings-header p {
+    font-size: 1.25rem;
+  }
+  
+  .settings-content {
+    padding: 3rem;
+  }
+}
+
+/* 平板端 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .settings-container {
+    gap: 2rem;
+  }
+  
+  .settings-header h2 {
+    font-size: 2rem;
+  }
+  
+  .settings-header p {
+    font-size: 1.1rem;
+  }
+  
+  .settings-content {
+    padding: 2rem;
+    border-radius: 1rem;
+  }
+}
+
+/* 移动端 */
+@media (max-width: 767px) {
+  .settings-container {
+    gap: 1.5rem;
+  }
+  
+  .settings-header h2 {
+    font-size: 1.7rem;
+  }
+  
+  .settings-header p {
+    font-size: 1rem;
+  }
+  
+  .settings-content {
+    padding: 1.5rem;
+    border-radius: 1rem;
+  }
+}
+
+/* 小屏移动端 */
+@media (max-width: 480px) {
+  .settings-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .settings-header p {
+    font-size: 0.9rem;
+  }
+  
+  .settings-content {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 767px) {
+  .settings-page {
+    /* 移动端安全区域适配 */
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  .settings-container {
+    width: 100%;
+  }
+  
+  .settings-content {
+    /* 移动端内容优化 */
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* 移动端横屏优化 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .settings-page {
+    padding: 0.5rem 1rem;
+  }
+  
+  .settings-container {
+    gap: 1rem;
+  }
+  
+  .settings-header {
+    margin-bottom: 0.5rem;
+  }
+  
+  .settings-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .settings-header p {
+    font-size: 0.85rem;
+  }
+}

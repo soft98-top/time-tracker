@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试反思总结保存</title>
+</head>
+<body>
+    <h1>反思总结保存测试</h1>
+    <div id="test-results"></div>
+    
+    <script>
+        // 模拟 HistoryService 的测试
+        function testReflectionSave() {
+            const results = document.getElementById('test-results');
+            
+            try {
+                // 1. 创建一个测试会话记录
+                const testRecord = {
+                    id: 'test-session-123',
+                    type: 'focus',
+                    startTime: Date.now() - 25 * 60 * 1000,
+                    endTime: Date.now(),
+                    duration: 25 * 60 * 1000,
+                    isCompleted: true,
+                    isFailed: false
+                };
+                
+                // 2. 保存到 localStorage
+                const historyData = {
+                    version: '1.0.0',
+                    records: [testRecord],
+                    updatedAt: Date.now()
+                };
+                
+                localStorage.setItem('flexible-pomodoro-history', JSON.stringify(historyData));
+                
+                // 3. 测试更新反思总结
+                const testContent = '这是一个测试反思总结内容';
+                
+                // 模拟更新逻辑
+                const stored = localStorage.getItem('flexible-pomodoro-history');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    const recordIndex = data.records.findIndex(r => r.id === 'test-session-123');
+                    
+                    if (recordIndex !== -1) {
+                        data.records[recordIndex].reflectionSummary = {
+                            content: testContent,
+                            createdAt: Date.now(),
+                            updatedAt: Date.now()
+                        };
+                        
+                        localStorage.setItem('flexible-pomodoro-history', JSON.stringify(data));
+                        
+                        // 验证保存结果
+                        const updated = JSON.parse(localStorage.getItem('flexible-pomodoro-history'));
+                        const updatedRecord = updated.records.find(r => r.id === 'test-session-123');
+                        
+                        if (updatedRecord && updatedRecord.reflectionSummary && updatedRecord.reflectionSummary.content === testContent) {
+                            results.innerHTML = '<p style="color: green;">✅ 反思总结保存测试成功！</p>';
+                            results.innerHTML += '<p>保存的内容: ' + updatedRecord.reflectionSummary.content + '</p>';
+                            results.innerHTML += '<p>创建时间: ' + new Date(updatedRecord.reflectionSummary.createdAt).toLocaleString() + '</p>';
+                        } else {
+                            results.innerHTML = '<p style="color: red;">❌ 反思总结保存失败 - 验证失败</p>';
+                        }
+                    } else {
+                        results.innerHTML = '<p style="color: red;">❌ 找不到测试记录</p>';
+                    }
+                } else {
+                    results.innerHTML = '<p style="color: red;">❌ localStorage 中没有历史记录</p>';
+                }
+                
+            } catch (error) {
+                results.innerHTML = '<p style="color: red;">❌ 测试失败: ' + error.message + '</p>';
+            }
+        }
+        
+        // 运行测试
+        testReflectionSave();
+        
+        // 显示当前 localStorage 内容
+        setTimeout(() => {
+            const current = localStorage.getItem('flexible-pomodoro-history');
+            if (current) {
+                const data = JSON.parse(current);
+                document.getElementById('test-results').innerHTML += '<h3>当前 localStorage 内容:</h3>';
+                document.getElementById('test-results').innerHTML += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            }
+        }, 100);
+    </script>
+</body>
+</html>

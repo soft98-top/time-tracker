@@ -1,0 +1,207 @@
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 3rem; /* 桌面端更宽松的内边距 */
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 80px; /* 确保导航栏有足够高度 */
+}
+
+.nav-brand h1 {
+  margin: 0;
+  font-size: 1.75rem; /* 桌面端更大的标题 */
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem; /* 桌面端更宽的间距 */
+  align-items: center;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 桌面端更宽的图标间距 */
+  padding: 0.75rem 1.25rem; /* 桌面端更大的点击区域 */
+  text-decoration: none;
+  color: var(--text-secondary);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 1rem; /* 桌面端标准字体大小 */
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+  background: var(--hover-bg);
+}
+
+.nav-link.active {
+  color: var(--primary-color);
+  background: var(--active-bg);
+}
+
+.nav-icon {
+  font-size: 1.25rem; /* 桌面端稍大的图标 */
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.75rem; /* 桌面端更大的点击区域 */
+  border-radius: 0.75rem;
+  transition: background 0.2s ease;
+  min-height: 48px; /* 确保足够的点击区域 */
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: var(--hover-bg);
+}
+
+/* 响应式设计 */
+/* 大屏桌面端 */
+@media (min-width: 1400px) {
+  .navigation {
+    padding: 1.5rem 4rem;
+  }
+  
+  .nav-brand h1 {
+    font-size: 2rem;
+  }
+  
+  .nav-links {
+    gap: 3rem;
+  }
+  
+  .nav-link {
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* 平板端 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .navigation {
+    padding: 1rem 2rem;
+  }
+  
+  .nav-brand h1 {
+    font-size: 1.5rem;
+  }
+  
+  .nav-links {
+    gap: 1.5rem;
+  }
+  
+  .nav-link {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* 移动端 */
+@media (max-width: 767px) {
+  .navigation {
+    padding: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    min-height: 120px; /* 移动端导航栏高度 */
+  }
+  
+  .nav-brand h1 {
+    font-size: 1.3rem;
+  }
+  
+  .nav-links {
+    gap: 1rem;
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
+  
+  .nav-icon {
+    font-size: 1.1rem;
+  }
+  
+  .theme-toggle {
+    padding: 0.5rem;
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* 小屏移动端 */
+@media (max-width: 480px) {
+  .navigation {
+    padding: 0.75rem;
+  }
+  
+  .nav-brand h1 {
+    font-size: 1.2rem;
+  }
+  
+  .nav-links {
+    gap: 0.5rem;
+  }
+  
+  .nav-link {
+    flex-direction: column;
+    padding: 0.5rem 0.75rem; /* 增加触摸区域 */
+    font-size: 0.8rem;
+    gap: 0.25rem;
+    min-height: 44px; /* 确保触摸友好 */
+    min-width: 44px;
+    border-radius: 8px;
+  }
+  
+  .nav-icon {
+    font-size: 1rem;
+  }
+}
+
+/* 移动端触摸反馈 */
+@media (max-width: 767px) {
+  .nav-link:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+  
+  .theme-toggle:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+  
+  /* 移动端长按防止选择 */
+  .nav-link,
+  .theme-toggle {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
