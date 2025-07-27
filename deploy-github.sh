@@ -15,5 +15,5 @@ echo "📤 推送代码到 GitHub..."
 git push origin main
 
 echo "✅ 部署完成！"
-echo "🌐 访问地址: https://soft98-top.github.io/time-tracker"
+echo "🌐 访问地址: https://apps.soft98.top/time-tracker"
 echo "⏳ 请等待 GitHub Actions 完成构建和部署（通常需要 2-5 分钟）"
