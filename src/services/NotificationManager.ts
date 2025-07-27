@@ -173,7 +173,7 @@ export class NotificationManager {
         requireInteraction: options.requireInteraction || true, // 默认需要用户交互
         badge: '/vite.svg',
         silent: false, // 确保有声音
-        timestamp: Date.now(),
+        // timestamp: Date.now(), // 不是标准的 NotificationOptions 属性
         renotify: true // 允许重复通知
       });
 
@@ -360,7 +360,7 @@ export class NotificationManager {
 
       return new Promise((resolve, reject) => {
         oscillator.onended = () => resolve();
-        oscillator.onerror = () => reject(new Error('Oscillator error'));
+        // oscillator.onerror = () => reject(new Error('Oscillator error')); // OscillatorNode 没有 onerror 属性
         
         // 添加超时保护
         setTimeout(() => {
