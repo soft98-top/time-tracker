@@ -174,7 +174,7 @@ export class NotificationManager {
         badge: '/vite.svg',
         silent: false, // 确保有声音
         // timestamp: Date.now(), // 不是标准的 NotificationOptions 属性
-        renotify: true // 允许重复通知
+        // renotify: true // 不是标准的 NotificationOptions 属性
       });
 
       // 点击通知时聚焦窗口
