@@ -31,7 +31,7 @@ function App() {
   return (
     <ErrorBoundary>
       <TimerProvider>
-        <Router>
+        <Router basename={import.meta.env.PROD ? '/time-tracker' : '/'}>
           <div className="app">
             <Navigation theme={theme} onThemeToggle={toggleTheme} />
             <main className="app-main">

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Time Tracker</title>
+  <script>
+    // GitHub Pages SPA 路由解决方案
+    // 将路径信息存储在 sessionStorage 中，然后重定向到 index.html
+    sessionStorage.setItem('pathToRedirect', window.location.pathname + window.location.search + window.location.hash);
+    window.location.replace('/time-tracker/');
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
