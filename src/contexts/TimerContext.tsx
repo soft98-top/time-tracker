@@ -139,19 +139,7 @@ function timerReducer(state: TimerReducerState, action: TimerAction): TimerReduc
     }
 
     case ActionType.CANCEL: {
-      // 验证状态转换
-      const transitionResult = stateMachine.validateTransition(
-        state.timerState.currentState,
-        TimerState.IDLE,
-        state.timerState,
-        state.config
-      );
-      
-      if (!transitionResult.success) {
-        console.error('无法取消当前状态:', transitionResult.error?.message);
-        return state;
-      }
-
+      // 强制取消到IDLE状态，不进行状态转换验证
       const newTimerState: TimerStateData = {
         currentState: TimerState.IDLE,
         startTime: null,
@@ -181,38 +169,51 @@ function timerReducer(state: TimerReducerState, action: TimerAction): TimerReduc
       const now = Date.now();
       const rawElapsedTime = now - state.timerState.startTime;
       
-      // 时间合理性验证
-      const MAX_REASONABLE_TIME = 24 * 60 * 60 * 1000; // 24小时
-      const MIN_TIME_DIFF = -1000; // 允许1秒的时间回退
+      // 只在极端异常情况下重置（超过48小时或负时间超过5分钟）
+      const MAX_REASONABLE_TIME = 48 * 60 * 60 * 1000; // 48小时
+      const MIN_TIME_DIFF = -5 * 60 * 1000; // 允许5分钟的时间回退
       
-      // 检测异常时间
       if (rawElapsedTime > MAX_REASONABLE_TIME || rawElapsedTime < MIN_TIME_DIFF) {
-        console.warn('检测到异常时间，重置计时器状态');
-        return {
-          ...state,
-          timerState: {
-            ...initialTimerState,
-            availableActions: {
-              canStartFocus: true,
-              canCancel: false,
-              canSwitchToReflection: false,
-              canSwitchToRest: false
-            }
-          }
+        console.warn('检测到极端异常时间，以startTime为基准修复时间', {
+          rawElapsedTime,
+          maxReasonableTime: MAX_REASONABLE_TIME,
+          minTimeDiff: MIN_TIME_DIFF,
+          startTime: state.timerState.startTime,
+          now
+        });
+        
+        // 以startTime为基准，修复到合理的时间范围
+        let fixedElapsedTime;
+        if (rawElapsedTime > MAX_REASONABLE_TIME) {
+          fixedElapsedTime = MAX_REASONABLE_TIME;
+        } else if (rawElapsedTime < MIN_TIME_DIFF) {
+          fixedElapsedTime = 0;
+        } else {
+          fixedElapsedTime = Math.max(0, rawElapsedTime);
+        }
+        
+        // 检查是否达到默认时间
+        const isDefaultTimeReached = stateMachine.checkDefaultTimeReached(
+          state.timerState.currentState,
+          fixedElapsedTime,
+          state.config
+        );
+        
+        const updatedTimerState = {
+          ...state.timerState,
+          elapsedTime: fixedElapsedTime,
+          isDefaultTimeReached
         };
-      }
-      
-      // 检测时间跳跃（超过5秒的跳跃认为异常）
-      const timeDiff = rawElapsedTime - state.timerState.elapsedTime;
-      if (timeDiff > 5000 && state.timerState.elapsedTime > 0) {
-        console.warn('检测到时间跳跃，调整开始时间');
-        const adjustedStartTime = now - state.timerState.elapsedTime - 1000;
+        
+        const canSwitchState = stateMachine.updateCanSwitchState(updatedTimerState, state.config);
+        const availableActions = stateMachine.calculateAvailableActions(updatedTimerState, state.config);
+        
         return {
           ...state,
           timerState: {
-            ...state.timerState,
-            startTime: adjustedStartTime,
-            elapsedTime: now - adjustedStartTime
+            ...updatedTimerState,
+            canSwitchState,
+            availableActions
           }
         };
       }
@@ -734,6 +735,12 @@ export function TimerProvider({ children }: TimerProviderProps) {
       const previousState = state.timerState.currentState;
       const finalReflectionContent = reflectionContent || reflectionContentRef.current;
 
+      console.log('Cancel operation started:', {
+        previousState,
+        currentState: state.timerState.currentState,
+        startTime: state.timerState.startTime,
+        elapsedTime: state.timerState.elapsedTime
+      });
       
       // 保存当前状态记录
       if (state.timerState.currentState !== TimerState.IDLE && state.timerState.startTime) {
@@ -741,6 +748,13 @@ export function TimerProvider({ children }: TimerProviderProps) {
         const isCompleted = false; // 取消操作意味着未完成
         const isFailed = state.timerState.currentState === TimerState.FOCUS && 
                         stateMachineRef.current.isFocusFailed(state.timerState, state.config);
+        
+        console.log('Saving session record on cancel:', {
+          type: state.timerState.currentState,
+          duration: now - state.timerState.startTime,
+          isCompleted,
+          isFailed
+        });
         
         // 如果是反思状态，保存反思会话记录
         if (state.timerState.currentState === TimerState.REFLECTION) {
@@ -771,12 +785,16 @@ export function TimerProvider({ children }: TimerProviderProps) {
       
       // 清除currentSessionId
       dispatch({ type: ActionType.SET_CURRENT_SESSION_ID, payload: null });
+      
+      console.log('Dispatching CANCEL action');
       dispatch({ type: ActionType.CANCEL });
       
       // 发送状态切换通知
       if (previousState !== TimerState.IDLE) {
         notificationManager.notifyStateChanged(previousState, TimerState.IDLE);
       }
+      
+      console.log('Cancel operation completed');
     },
     
     // 配置
