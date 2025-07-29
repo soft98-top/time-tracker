@@ -28,6 +28,9 @@ export interface TimerContextType {
   // 反思总结
   updateReflectionSummary: (sessionId: string, content: string) => void;
   getCurrentSessionId: () => string | null;
+  
+  // 删除记录
+  deleteRecord: (recordId: string) => boolean;
 }
 
 /**

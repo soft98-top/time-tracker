@@ -745,7 +745,7 @@ export function TimerProvider({ children }: TimerProviderProps) {
       // 保存当前状态记录
       if (state.timerState.currentState !== TimerState.IDLE && state.timerState.startTime) {
         const now = Date.now();
-        const isCompleted = false; // 取消操作意味着未完成
+        const isCompleted = state.timerState.isDefaultTimeReached;
         const isFailed = state.timerState.currentState === TimerState.FOCUS && 
                         stateMachineRef.current.isFocusFailed(state.timerState, state.config);
         
@@ -877,6 +877,16 @@ export function TimerProvider({ children }: TimerProviderProps) {
     
     getCurrentSessionId: () => {
       return state.currentSessionId;
+    },
+    
+    // 删除记录
+    deleteRecord: (recordId: string) => {
+      try {
+        return HistoryService.deleteRecord(recordId);
+      } catch (error) {
+        console.error('删除记录失败:', error);
+        throw error;
+      }
     }
   };
 

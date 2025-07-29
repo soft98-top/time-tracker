@@ -199,6 +199,9 @@ export interface I18nMessages {
     previousPage: string;
     nextPage: string;
     pageInfo: string;
+    deleteRecord: string;
+    confirmDelete: string;
+    deleteFailed: string;
   };
   
   // 反思
@@ -560,7 +563,10 @@ const zhMessages: I18nMessages = {
     clearFilters: '清除筛选',
     previousPage: '上一页',
     nextPage: '下一页',
-    pageInfo: '第 {current} 页，共 {total} 页'
+    pageInfo: '第 {current} 页，共 {total} 页',
+    deleteRecord: '删除记录',
+    confirmDelete: '确定要删除这条记录吗？',
+    deleteFailed: '删除记录失败'
   },
   
   reflection: {
@@ -915,7 +921,10 @@ const enMessages: I18nMessages = {
     clearFilters: 'Clear Filters',
     previousPage: 'Previous',
     nextPage: 'Next',
-    pageInfo: 'Page {current} of {total}'
+    pageInfo: 'Page {current} of {total}',
+    deleteRecord: 'Delete Record',
+    confirmDelete: 'Are you sure you want to delete this record?',
+    deleteFailed: 'Failed to delete record'
   },
   
   reflection: {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { HistoryService } from '../services/HistoryService';
 import { TimerState, type SessionRecord } from '../types';
+import { useTimer } from '../contexts/TimerContext';
 import './HistoryView.css';
 import { t } from '../i18n';
 
@@ -94,10 +95,18 @@ interface HistoryItemProps {
   record: SessionRecord;
   onSelect: (record: SessionRecord) => void;
   isSelected: boolean;
+  onDelete: (recordId: string) => void;
 }
 
-const HistoryItem: React.FC<HistoryItemProps> = ({ record, onSelect, isSelected }) => {
+const HistoryItem: React.FC<HistoryItemProps> = ({ record, onSelect, isSelected, onDelete }) => {
   const stateInfo = getStateInfo(record);
+  
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm(t('history.confirmDelete'))) {
+      onDelete(record.id);
+    }
+  };
   
   return (
     <div 
@@ -155,6 +164,13 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ record, onSelect, isSelected 
             📝
           </span>
         )}
+        <button 
+          className="delete-button"
+          onClick={handleDelete}
+          title={t('history.deleteRecord')}
+        >
+          🗑️
+        </button>
       </div>
     </div>
   );
@@ -270,6 +286,7 @@ const RecordDetails: React.FC<RecordDetailsProps> = ({ record, onClose }) => {
  * 历史记录视图组件
  */
 export const HistoryView: React.FC = () => {
+  const { deleteRecord } = useTimer();
   const [records, setRecords] = useState<SessionRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -309,6 +326,26 @@ export const HistoryView: React.FC = () => {
       console.error('加载历史记录失败:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 处理删除记录
+  const handleDeleteRecord = async (recordId: string) => {
+    try {
+      const success = deleteRecord(recordId);
+      if (success) {
+        // 重新加载历史记录
+        await loadHistory();
+        // 如果删除的是当前选中的记录，清除选中状态
+        if (selectedRecord && selectedRecord.id === recordId) {
+          setSelectedRecord(null);
+        }
+      } else {
+        setError(t('history.deleteFailed'));
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('history.deleteFailed'));
+      console.error('删除记录失败:', err);
     }
   };
 
@@ -497,6 +534,7 @@ export const HistoryView: React.FC = () => {
               record={record}
               onSelect={setSelectedRecord}
               isSelected={selectedRecord?.id === record.id}
+              onDelete={handleDeleteRecord}
             />
           ))
         )}

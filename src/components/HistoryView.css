@@ -192,6 +192,23 @@
   gap: 0.5rem;
 }
 
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+  opacity: 1;
+  background: #ffebee;
+  color: #f44336;
+}
+
 .completed {
   color: #4CAF50;
   font-size: 12px;
