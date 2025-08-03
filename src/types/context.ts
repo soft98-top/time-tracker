@@ -1,4 +1,5 @@
 import type { TimerStateData, TimerConfig, SessionRecord, Statistics } from './timer';
+import type { ContinuousFocusStreak } from './continuousFocusStreak';
 
 /**
  * Timer Context 类型定义
@@ -7,6 +8,7 @@ export interface TimerContextType {
   // 状态
   state: TimerStateData;
   config: TimerConfig;
+  continuousFocusStreak: ContinuousFocusStreak;
   
   // 操作
   startFocus: () => void;
@@ -45,7 +47,9 @@ export enum ActionType {
   UPDATE_CONFIG = 'UPDATE_CONFIG',
   RESTORE_STATE = 'RESTORE_STATE',
   RESET = 'RESET',
-  SET_CURRENT_SESSION_ID = 'SET_CURRENT_SESSION_ID'
+  SET_CURRENT_SESSION_ID = 'SET_CURRENT_SESSION_ID',
+  UPDATE_FOCUS_STREAK = 'UPDATE_FOCUS_STREAK',
+  RESET_FOCUS_STREAK = 'RESET_FOCUS_STREAK'
 }
 
 /**
@@ -65,4 +69,5 @@ export interface TimerReducerState {
   sessionHistory: SessionRecord[];
   currentSessionId: string | null;
   reflectionDraft: string;
+  continuousFocusStreak: ContinuousFocusStreak;
 }

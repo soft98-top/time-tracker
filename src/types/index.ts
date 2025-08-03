@@ -23,3 +23,12 @@ export type {
   TimerAction,
   TimerReducerState
 } from './context';
+
+// Continuous Focus Streak types
+export {
+  defaultContinuousFocusStreak
+} from './continuousFocusStreak';
+
+export type {
+  ContinuousFocusStreak
+} from './continuousFocusStreak';

@@ -10,6 +10,8 @@ import type {
 } from '../types';
 import { TimerState, defaultConfig } from '../types';
 import { ActionType } from '../types/context';
+import { defaultContinuousFocusStreak } from '../types/continuousFocusStreak';
+import { ContinuousFocusStreakService } from '../services/ContinuousFocusStreakService';
 import { TimerStateMachine } from '../services/TimerStateMachine';
 import { ConfigService } from '../services/ConfigService';
 import { HistoryService } from '../services/HistoryService';
@@ -37,7 +39,8 @@ const initialReducerState: TimerReducerState = {
   config: defaultConfig,
   sessionHistory: [],
   currentSessionId: null,
-  reflectionDraft: ''
+  reflectionDraft: '',
+  continuousFocusStreak: defaultContinuousFocusStreak
 };
 
 // Reducer 函数
@@ -273,7 +276,24 @@ function timerReducer(state: TimerReducerState, action: TimerAction): TimerReduc
     case ActionType.RESET: {
       return {
         ...initialReducerState,
-        config: state.config // 保留配置
+        config: state.config, // 保留配置
+        continuousFocusStreak: defaultContinuousFocusStreak
+      };
+    }
+
+    case ActionType.UPDATE_FOCUS_STREAK: {
+      const newStreak = action.payload as typeof state.continuousFocusStreak;
+      return {
+        ...state,
+        continuousFocusStreak: newStreak
+      };
+    }
+
+    case ActionType.RESET_FOCUS_STREAK: {
+      const resetStreak = action.payload as typeof state.continuousFocusStreak;
+      return {
+        ...state,
+        continuousFocusStreak: resetStreak
       };
     }
 
@@ -350,6 +370,22 @@ export function TimerProvider({ children }: TimerProviderProps) {
     
     try {
       const savedRecord = HistoryService.addRecord(record);
+
+      // 处理连续专注次数逻辑
+      try {
+        if (ContinuousFocusStreakService.shouldIncrementStreak(savedRecord, state.config)) {
+          // 增加连续专注次数
+          const newStreak = ContinuousFocusStreakService.incrementStreak(savedRecord.id);
+          dispatch({ type: ActionType.UPDATE_FOCUS_STREAK, payload: newStreak });
+        } else if (ContinuousFocusStreakService.shouldResetStreak(savedRecord, state.config)) {
+          // 重置连续专注次数
+          const resetStreak = ContinuousFocusStreakService.resetStreak();
+          dispatch({ type: ActionType.RESET_FOCUS_STREAK, payload: resetStreak });
+        }
+      } catch (streakError) {
+        console.error('更新连续专注次数失败:', streakError);
+        // 连续专注次数更新失败不应影响会话记录保存
+      }
 
       return savedRecord.id;
     } catch (error) {
@@ -481,7 +517,8 @@ export function TimerProvider({ children }: TimerProviderProps) {
           },
           config,
           currentSessionId: currentSessionId || null,
-          sessionHistory: []
+          sessionHistory: [],
+          continuousFocusStreak: defaultContinuousFocusStreak
         };
       }
 
@@ -495,7 +532,8 @@ export function TimerProvider({ children }: TimerProviderProps) {
         timerState: timerStateWithActions,
         config,
         currentSessionId: currentSessionId || null,
-        sessionHistory: []
+        sessionHistory: [],
+        continuousFocusStreak: defaultContinuousFocusStreak
       };
     } catch (error) {
       console.error('恢复状态失败:', error);
@@ -528,6 +566,15 @@ export function TimerProvider({ children }: TimerProviderProps) {
         // 否则只加载配置
         const config = ConfigService.loadConfig();
         dispatch({ type: ActionType.UPDATE_CONFIG, payload: config });
+      }
+      
+      // 加载连续专注次数
+      try {
+        const streak = ContinuousFocusStreakService.loadStreak();
+        dispatch({ type: ActionType.UPDATE_FOCUS_STREAK, payload: streak });
+      } catch (streakError) {
+        console.error('加载连续专注次数失败:', streakError);
+        // 使用默认值，不影响应用启动
       }
       
       // 初始化通知管理器
@@ -588,6 +635,7 @@ export function TimerProvider({ children }: TimerProviderProps) {
     // 状态
     state: state.timerState,
     config: state.config,
+    continuousFocusStreak: state.continuousFocusStreak,
     
     // 操作
     startFocus: () => {

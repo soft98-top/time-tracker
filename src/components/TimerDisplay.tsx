@@ -77,6 +77,107 @@ function getStateClassName(state: TimerState): string {
 }
 
 /**
+ * 获取连续专注次数的CSS类名
+ */
+function getStreakClassName(count: number): string {
+  const classes = ['continuous-focus-streak__content'];
+  
+  if (count === 0) {
+    classes.push('zero-streak');
+  } else if (count >= 20) {
+    classes.push('milestone-streak');
+  } else if (count >= 10) {
+    classes.push('high-streak');
+  }
+  
+  return classes.join(' ');
+}
+
+/**
+ * 获取连续专注次数的工具提示文本
+ */
+function getStreakTooltip(count: number): string {
+  if (count === 0) {
+    return '开始你的专注之旅！';
+  } else if (count >= 20) {
+    return `太棒了！你已经连续专注了${count}次！`;
+  } else if (count >= 10) {
+    return `很好！你已经连续专注了${count}次`;
+  } else if (count >= 5) {
+    return `不错！继续保持专注`;
+  } else {
+    return `已连续专注${count}次`;
+  }
+}
+
+/**
+ * 连续专注次数显示组件
+ */
+function ContinuousFocusStreakDisplay(): React.ReactElement {
+  const { continuousFocusStreak } = useTimer();
+  const [animationClass, setAnimationClass] = React.useState<string>('');
+  const prevCountRef = React.useRef<number>(continuousFocusStreak.count);
+  
+  // 监听连续次数变化，添加动画效果
+  React.useEffect(() => {
+    const currentCount = continuousFocusStreak.count;
+    const prevCount = prevCountRef.current;
+    
+    if (currentCount !== prevCount) {
+      if (currentCount > prevCount) {
+        // 连续次数增加
+        if (currentCount % 10 === 0 && currentCount >= 10) {
+          // 里程碑动画
+          setAnimationClass('milestone');
+        } else {
+          // 普通增加动画
+          setAnimationClass('updated');
+        }
+      } else if (currentCount < prevCount) {
+        // 连续次数重置
+        setAnimationClass('reset');
+      }
+      
+      // 清除动画类
+      const timer = setTimeout(() => {
+        setAnimationClass('');
+      }, 1200);
+      
+      prevCountRef.current = currentCount;
+      
+      return () => clearTimeout(timer);
+    }
+  }, [continuousFocusStreak.count]);
+  
+  const contentClassName = `${getStreakClassName(continuousFocusStreak.count)} ${animationClass}`.trim();
+  const countClassName = `continuous-focus-streak__count ${animationClass}`.trim();
+  const tooltipText = getStreakTooltip(continuousFocusStreak.count);
+  
+  return (
+    <div 
+      className="continuous-focus-streak" 
+      data-testid="continuous-focus-streak"
+      data-tooltip={tooltipText}
+      role="status"
+      aria-live="polite"
+      aria-label={`当前连续专注次数：${continuousFocusStreak.count}次`}
+    >
+      <div className={contentClassName}>
+        <span className="continuous-focus-streak__label">已持续专注</span>
+        <span 
+          className={countClassName}
+          data-testid="streak-count"
+          aria-label={`${continuousFocusStreak.count}次`}
+        >
+          {continuousFocusStreak.count}
+        </span>
+        <span className="continuous-focus-streak__unit">次</span>
+      </div>
+    </div>
+  );
+}
+
+/**
  * 计时器显示组件
  * 显示当前状态、已用时间和状态提示信息
  */
@@ -136,6 +237,9 @@ export function TimerDisplay(): React.ReactElement {
           </div>
         )}
       </div>
+
+      {/* 连续专注次数显示 */}
+      <ContinuousFocusStreakDisplay />
 
       {/* 状态提示信息 */}
       <div className="timer-display__message">

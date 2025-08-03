@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TimerDisplay } from './TimerDisplay';
 import { TimerState, TimerStateData, TimerConfig, defaultConfig } from '../types';
+import { defaultContinuousFocusStreak } from '../types/continuousFocusStreak';
 
 // Mock the useTimer hook
 const mockUseTimer = vi.fn();
@@ -18,6 +19,12 @@ describe('TimerDisplay', () => {
     restDuration: 10
   };
 
+  const createMockTimerContext = (state: TimerStateData, config: TimerConfig = mockConfig) => ({
+    state,
+    config,
+    continuousFocusStreak: defaultContinuousFocusStreak
+  });
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -32,10 +39,7 @@ describe('TimerDisplay', () => {
         canSwitchState: false
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -53,10 +57,7 @@ describe('TimerDisplay', () => {
         canSwitchState: false
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       const { container } = render(<TimerDisplay />);
       const timerDisplay = container.querySelector('.timer-display');
@@ -75,10 +76,7 @@ describe('TimerDisplay', () => {
         canSwitchState: false
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -96,10 +94,7 @@ describe('TimerDisplay', () => {
         canSwitchState: false
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -120,10 +115,7 @@ describe('TimerDisplay', () => {
         canSwitchState: false
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -139,10 +131,7 @@ describe('TimerDisplay', () => {
         canSwitchState: true
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -160,10 +149,7 @@ describe('TimerDisplay', () => {
         canSwitchState: true
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -182,10 +168,7 @@ describe('TimerDisplay', () => {
         canSwitchState: true
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       const { container } = render(<TimerDisplay />);
       const timerDisplay = container.querySelector('.timer-display');
@@ -204,10 +187,7 @@ describe('TimerDisplay', () => {
         canSwitchState: true
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -226,10 +206,7 @@ describe('TimerDisplay', () => {
         canSwitchState: true
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       const { container } = render(<TimerDisplay />);
       const timerDisplay = container.querySelector('.timer-display');
@@ -248,10 +225,7 @@ describe('TimerDisplay', () => {
         canSwitchState: true
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -268,10 +242,7 @@ describe('TimerDisplay', () => {
         canSwitchState: true
       };
 
-      mockUseTimer.mockReturnValue({
-        state: mockState,
-        config: mockConfig
-      });
+      mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
       render(<TimerDisplay />);
 
@@ -300,10 +271,7 @@ describe('TimerDisplay', () => {
           canSwitchState: false
         };
 
-        mockUseTimer.mockReturnValue({
-          state: mockState,
-          config: mockConfig
-        });
+        mockUseTimer.mockReturnValue(createMockTimerContext(mockState));
 
         const { rerender } = render(<TimerDisplay />);
         expect(screen.getByText(expected)).toBeInTheDocument();
@@ -351,10 +319,7 @@ describe('TimerDisplay', () => {
           restDuration: state === TimerState.REST ? targetDuration : mockConfig.restDuration
         };
 
-        mockUseTimer.mockReturnValue({
-          state: mockState,
-          config
-        });
+        mockUseTimer.mockReturnValue(createMockTimerContext(mockState, config));
 
         const { rerender } = render(<TimerDisplay />);
         const progressFill = document.querySelector('.timer-display__progress-fill');
